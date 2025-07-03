@@ -29,11 +29,59 @@ export default function App() {
     }
   ])
 
+  const [editingTodo, setEditingTodo] = useState(null);
 
-  const [showAddTodo, setShowAddTodo] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+
 
   const formatDate = (date) => {
     return date.toLocaleDateString("en-SG");
+  }
+
+  const processAddTodo = (title, dateDue, urgency) => {
+    const newTodo = {
+      id: Math.floor(Math.random() * 1000 + 1),
+      title: title,
+      dateDue: new Date(dateDue),
+      urgency: urgency,
+      done: false
+    };
+    // React only "detect" that state has changed only if its value
+    // to "change" an array
+    // 1. clone the array
+    // 2. modify the clone
+    // 3. replace the array in the state with the clone
+
+    // STRAIGHTFOWARD:
+    // const clone = todos.slice();
+    // clone.push(newTodo);
+    // setTodos(clone);
+
+    setTodos([...todos, newTodo]);
+
+
+  }
+
+  const processEditTodo = (editingTodo, title, dateDue, urgency) => {
+    // modify an object
+    // 1. clone the object
+    // 2. make the changes
+    console.log(dateDue);
+    console.log(new Date(dateDue));
+    const clonedTodo = {...editingTodo, title:title, dateDue:new Date(dateDue), urgency:urgency}
+  
+    // clone the array and modify the array
+    const cloned = todos.map( todo => {
+      if (todo.id != editingTodo.id) {
+        return todo
+      } else {
+        return clonedTodo;
+      }
+    })
+
+    console.log(cloned);
+    setTodos(cloned);
+  
   }
 
 
@@ -50,40 +98,36 @@ export default function App() {
     <div className="container">
       <h1>Todo List</h1>
       <button onClick={() => {
-        setShowAddTodo(true);
+        setShowDialog(true);
       }}>Add New Todo</button>
 
       <div className="dialog" style={{
-        "display": showAddTodo ? "block" : "none"
+        "display": showDialog ? "block" : "none"
       }}>
-        <TodoForm onSubmit={(title, dateDue, urgency) => {
-          const newTodo = {
-            id: Math.floor(Math.random() * 1000 + 1),
-            title: title,
-            dateDue: new Date(dateDue),
-            urgency: urgency,
-            done: false
-          };
-          // React only "detect" that state has changed only if its value
-          // to "change" an array
-          // 1. clone the array
-          // 2. modify the clone
-          // 3. replace the array in the state with the clone
-
-          // STRAIGHTFOWARD:
-          // const clone = todos.slice();
-          // clone.push(newTodo);
-          // setTodos(clone);
-
-          setTodos([...todos, newTodo]);
-
-
-        }} 
-        onCancel = {()=>{
-          setShowAddTodo(false);
-        }}
+        <TodoForm
+          action={editingTodo ? "Edit" : "Create"}
+          onSubmit={(title, dateDue, urgency) => {
+            if (editingTodo) {
+              processEditTodo(editingTodo, title, dateDue, urgency)
+               setEditingTodo(null);
+            } else {
+              processAddTodo(title, dateDue, urgency)
+            }
+            setShowDialog(false);
+           
+            
+          }}
+          onCancel={() => {
+            setShowDialog(false);
+            setEditingTodo(null);
+          }}
+          title = {editingTodo?.title}
+          dateDue = {editingTodo?.dateDue}
+          urgency = {editingTodo?.urgency}
         />
       </div>
+
+
 
       <ul className="list-group">
         {
@@ -97,6 +141,10 @@ export default function App() {
                 <li>Date Due: {formatDate(t.dateDue)}</li>
                 <li>Done: <input type="checkbox" checked={t.done} /></li>
               </ul>
+              <button className="mt-3 btn btn-primary btn-sm" onClick={()=>{
+                setEditingTodo(t);
+                setShowDialog(true);
+              }}>Update</button>
             </li>
           })
         }

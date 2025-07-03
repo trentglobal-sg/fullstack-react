@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function TodoForm(props) {
-    const [title, setTitle] = useState("");
-    const [dateDue, setDateDue] = useState(new Date().toISOString().split('T')[0]);
-    const [urgency, setUrgency] = useState(1);
+    const [title, setTitle] = useState("" || props.title);
+    const [dateDue, setDateDue] = useState(
+        props.dateDue ? props.dateDue.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+    );
+    const [urgency, setUrgency] = useState(1 || props.urgency);
+
+    useEffect(()=>{
+        setTitle(props.title);
+        setDateDue(props.dateDue?.toISOString().split('T')[0]);
+        setUrgency(props.urgency);
+    }, [props.title, props.dateDue, props.urgency])
 
     const submitForm = (event) => {
         // prevent form submission
@@ -48,9 +56,12 @@ export default function TodoForm(props) {
                     ))}
                 </div>
             </div>
-            <button className="btn btn-primary">Create</button>
+            <button className="btn btn-primary">{props.action}</button>
             <a className="btn btn-danger" onClick={()=>{
                 props.onCancel();
+                setTitle("");
+                setDateDue(new Date().toISOString().split('T')[0]);
+                setUrgency(1);
             }}>Cancel</a>
         </form>
 
