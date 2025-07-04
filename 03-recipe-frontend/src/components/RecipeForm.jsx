@@ -1,18 +1,7 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function RecipeForm({ cuisines, categories, tags, onSubmit }) {
-
-    const [formState, setFormState] = useState({
-        name: "",
-        description: "",
-        cooking_time: "",
-        ingredients: "",
-        steps: "",
-        cuisine_id: 0,
-        category_id: 0,
-        tags: []
-    })
+function RecipeForm({ cuisines, categories, tags, onSubmit, formState }) {
 
     const handleFormChange = (event) => {
         const fieldName = event.target.name;
@@ -56,6 +45,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                     placeholder="Enter recipe name"
                     required
                     onChange={handleFormChange}
+                    value={formState.name}
                 />
             </div>
 
@@ -70,6 +60,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                     placeholder="Describe your recipe"
                     required
                     onChange={handleFormChange}
+                    value={formState.description}
                 ></textarea>
             </div>
 
@@ -85,6 +76,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                     placeholder="e.g. 30"
                     required
                     onChange={handleFormChange}
+                    value={formState.cooking_time}
                 />
             </div>
 
@@ -101,6 +93,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                     placeholder="e.g. chicken, rice, flour"
                     required
                     onChange={handleFormChange}
+                    value={formState.ingredients}
                 ></textarea>
             </div>
 
@@ -117,6 +110,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                     placeholder="Step 1: ...&#10;Step 2: ..."
                     required
                     onChange={handleFormChange}
+                    value={formState.steps}
                 ></textarea>
             </div>
 
@@ -126,7 +120,10 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                 <select className="form-select" id="cuisine_id" name="cuisine_id" onChange={handleFormChange} required >
                     <option value="0">Select a cuisine</option>
                     {cuisines.map(cuisine => (
-                        <option key={cuisine.cuisine_id} value={cuisine.cuisine_id}>
+                        <option key={cuisine.cuisine_id} 
+                                value={cuisine.cuisine_id}
+                                selected={cuisine.cuisine_id == formState.cuisine_id}
+                                >
                             {cuisine.name}
                         </option>
                     ))}
@@ -139,7 +136,10 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                 <select className="form-select" id="category_id" name="category_id" onChange={handleFormChange} required>
                     <option value="0">Select a category</option>
                     {categories.map(category => (
-                        <option key={category.category_id} value={category.category_id}>
+                        <option key={category.category_id}
+                                value={category.category_id}
+                                selected={category.category_id == formState.category_id}
+                                >
                             {category.name}
                         </option>
                     ))}
@@ -155,10 +155,13 @@ function RecipeForm({ cuisines, categories, tags, onSubmit }) {
                     id="tags"
                     size="3"
                     onChange={handleMultiSelectChange}
-                    name="tags"
+                    name="tag_ids"
                 >
                     {tags.map(tag => (
-                        <option key={tag.tag_id} value={tag.tag_id}>
+                        <option key={tag.tag_id} 
+                                value={tag.tag_id} 
+                                selected={formState.tag_ids.includes(tag.tag_id)}
+                        >
                             {tag.name}
                         </option>
                     ))}

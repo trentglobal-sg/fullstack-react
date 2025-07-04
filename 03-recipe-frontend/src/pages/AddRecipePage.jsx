@@ -9,9 +9,19 @@ export default function AddRecipePage() {
     const [cuisines, setCuisines] = useState([]);
     const [categories, setCategories] = useState([]);
     const [, setLocation] = useLocation();
+    const [formState, setFormState] = useState({
+        name: "",
+        description: "",
+        cooking_time: 0,
+        ingredients: "",
+        steps: "",
+        cuisine_id: 0,
+        category_id: 0,
+        tag_ids: []
+    })
 
     const onSubmit = async (newRecipe) => {
-        const response = await axios.post(import.meta.env.VITE_BASE_API_URL+"/recipes", newRecipe);
+        const response = await axios.post(import.meta.env.VITE_BASE_API_URL + "/recipes", newRecipe);
         setLocation("/");
     }
 
@@ -35,10 +45,11 @@ export default function AddRecipePage() {
 
     return (<>
         <h1>Add Recipe</h1>
-        <RecipeForm tags={tags} 
-                    cuisines={cuisines} 
-                    categories={categories}
-                    onSubmit={onSubmit}
+        <RecipeForm tags={tags}
+            cuisines={cuisines}
+            categories={categories}
+            onSubmit={onSubmit}
+            formState={formState}
         />
     </>)
 }

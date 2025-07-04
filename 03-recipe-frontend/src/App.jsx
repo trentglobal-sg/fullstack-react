@@ -5,6 +5,7 @@ import AddRecipePage from './pages/AddRecipePage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import "bootstrap/dist/css/bootstrap.min.css";
+import EditRecipePage from './pages/EditRecipePage';
 
 export default function App() {
     return (<>
@@ -34,6 +35,7 @@ export default function App() {
             <Switch>
                 <Route path="/" component={ShowAllRecipePage} />
                 <Route path="/add" component={AddRecipePage} />
+                <Route path="/edit/:recipeId" component={EditRecipePage}/>
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/login" component={LoginPage} />
             </Switch>
