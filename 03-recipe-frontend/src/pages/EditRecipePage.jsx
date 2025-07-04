@@ -1,4 +1,4 @@
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import RecipeForm from "../components/RecipeForm";
@@ -19,7 +19,8 @@ export default function EditRecipePage() {
         cuisine_id: 0,
         category_id: 0,
         tags: []
-    })
+    });
+    const [, setLocation] = useLocation();
 
 
     useEffect(() => {
@@ -58,14 +59,26 @@ export default function EditRecipePage() {
         }
         fetchFormData();
 
-    }, [])
+    }, []);
+
+    const processEditRecipe = async (updatedRecipe) => {
+        await axios.put(import.meta.env.VITE_BASE_API_URL + "/recipes/" + recipeId, {
+            ...updatedRecipe,
+            tags: updatedRecipe.tag_ids
+        });
+        setLocation("/");
+        
+    }
 
     return (<>
         <h1>Edit Recipe: {recipe.name}</h1>
         <RecipeForm tags={tags} 
                     categories={categories} 
                     cuisines={cuisines} 
-                    formState={formState}/>
+                    formState={formState}
+                    onSubmit={processEditRecipe}
+                    setFormState={setFormState}
+        />
 
     </>)
 }

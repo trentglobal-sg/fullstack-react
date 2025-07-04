@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
+import { Link } from "wouter";
 
 export default function ShowAllRecipePage() {
 
@@ -27,6 +28,7 @@ export default function ShowAllRecipePage() {
                     <th>Category</th>
                     <th>Cooking Time</th>
                     <th>Tags</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +46,9 @@ export default function ShowAllRecipePage() {
                                     {
                                         r.tags?.split(',').map(t => <span className="me-1 ms-1 badge bg-primary">{t}</span>)
                                     }
+                                </td>
+                                <td>
+                                    <Link href={"/edit/" + r.recipe_id} className="btn btn-primary btn-sm">Edit</Link>
                                 </td>
                             </tr>
                         ))

@@ -50,6 +50,7 @@ export default function AddRecipePage() {
             categories={categories}
             onSubmit={onSubmit}
             formState={formState}
+            setFormState={setFormState}
         />
     </>)
 }

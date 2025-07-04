@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function RecipeForm({ cuisines, categories, tags, onSubmit, formState }) {
+function RecipeForm({ cuisines, categories, tags, onSubmit, formState, setFormState }) {
 
     const handleFormChange = (event) => {
         const fieldName = event.target.name;
