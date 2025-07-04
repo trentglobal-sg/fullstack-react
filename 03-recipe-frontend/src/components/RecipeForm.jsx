@@ -32,6 +32,9 @@ function RecipeForm({ cuisines, categories, tags, onSubmit, formState, setFormSt
         onSubmit(formState);
     }
 
+    console.log(categories);
+    console.log(cuisines);
+
     return (
         <form className="container py-4" onSubmit={handleSubmit}>
             {/* Recipe Name */}
@@ -119,7 +122,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit, formState, setFormSt
                 <label htmlFor="cuisine_id" className="form-label">Cuisine *</label>
                 <select className="form-select" id="cuisine_id" name="cuisine_id" onChange={handleFormChange} required >
                     <option value="0">Select a cuisine</option>
-                    {cuisines.map(cuisine => (
+                    {cuisines?.map(cuisine => (
                         <option key={cuisine.cuisine_id} 
                                 value={cuisine.cuisine_id}
                                 selected={cuisine.cuisine_id == formState.cuisine_id}
@@ -135,7 +138,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit, formState, setFormSt
                 <label htmlFor="category_id" className="form-label" name="category">Category *</label>
                 <select className="form-select" id="category_id" name="category_id" onChange={handleFormChange} required>
                     <option value="0">Select a category</option>
-                    {categories.map(category => (
+                    {categories?.map(category => (
                         <option key={category.category_id}
                                 value={category.category_id}
                                 selected={category.category_id == formState.category_id}
@@ -157,7 +160,7 @@ function RecipeForm({ cuisines, categories, tags, onSubmit, formState, setFormSt
                     onChange={handleMultiSelectChange}
                     name="tag_ids"
                 >
-                    {tags.map(tag => (
+                    {tags?.map(tag => (
                         <option key={tag.tag_id} 
                                 value={tag.tag_id} 
                                 selected={formState.tag_ids.includes(tag.tag_id)}
